@@ -1,0 +1,54 @@
+<a routerLink="/admin/products"><button class="previous">Previous <i class="fa fa-caret-square-o-left"></i></button></a>
+
+<form class="product" [formGroup]="product">
+ 
+  <div class="row">
+
+      <div class="col-lg-8">
+         <div class="alert alert-danger" *ngIf="product.invalid && product.errors?.server_error" role="alert">
+                  <div *ngIf="product.errors?.server_error"><strong>{{product.errors?.server_error}}</strong></div>
+         </div> 
+         <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" formControlName="title" type="text" class="form-control">
+            <div class="alert alert-danger" *ngIf="product.controls.title.touched && product.controls.title.invalid">
+                  <div *ngIf="product.controls.title.errors?.required"> Title is required for every item.</div>
+                  <div *ngIf="product.controls.title.errors?.maxlength"> Title Maxlength is 10.</div>
+            </div>
+         </div>
+         <div class="form-group">
+               <label for="price">Price</label>
+               <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input id="price" formControlName="price" type="number" class="form-control">        
+               </div>
+               <div *ngIf="product.controls.price.touched && product.controls.price.invalid " class="alert alert-danger">
+                  <div *ngIf="product.controls.price.errors?.required"> Price is required for every item.</div>
+                  <div *ngIf="product.controls.price.errors?.maxlength"> Price Maxlength is 10.</div>
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="category">Category</label>
+               <select id="category" formControlName="category" class="form-control">
+               <option *ngFor="let category of categories;" value="{{category.name}}"> {{category.value}} </option>
+               </select>
+               <div class="alert alert-danger" *ngIf="product.controls.category.touched && product.controls.category.invalid ">
+                     <div *ngIf="product.controls.category.errors?.required"> Category is required for every item.</div>
+                     <div *ngIf="product.controls.category.errors?.shouldBeUniqueName">Title is already exists for given category.</div>
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="imageUrl">Image URL</label>
+               <input id="imageUrl" #imageSrc (change)="loadImage(imageSrc.value)" formControlName="imageUrl" type="url" class="form-control">
+               <div class="alert alert-danger" *ngIf="product.controls.imageUrl.touched && product.controls.imageUrl.invalid ">
+                     <div *ngIf="product.controls.imageUrl.errors?.required"> ImageUrl is required for every item.</div>
+                     <div *ngIf="product.controls.imageUrl.errors?.invalidImageURl"> Image Url is invalid. Url doesn't contain http:// or https://</div>
+               </div>
+            </div>
+            <button type="submit" (click)="addProduct()" [disabled]="product.invalid" class="btn btn-primary">Save</button>
+      </div>
+      <div class="col-lg-4">
+            <img class="card-img-top img-fluid" [src]="imageSrc.value" alt="">
+      </div>
+  </div> 
+</form>

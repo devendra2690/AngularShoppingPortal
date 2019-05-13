@@ -1,32 +1,43 @@
-import { TestBed, async } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+
+import {RouterTestingModule} from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import { RouterOutlet } from '@angular/router';
+import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 
-describe('AppComponent', () => {
+//NOTE: I've deliberately excluded this suite from running
+// because the test will fail. This is because we have not 
+// provided the TodoService as a dependency to TodosComponent. 
+// 
+// When you get to Lecture 6 (Providing Dependencies), be sure
+// to remove "x" from "xdescribe" below. 
+
+describe('TodosComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+      //declarations: [ AppComponent,BsNavbarComponent],
+      declarations: [ AppComponent],
+      imports:[RouterTestingModule.withRoutes([])],
+      schemas : [NO_ERRORS_SCHEMA]
+    })
+    .compileComponents();
   }));
 
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
-  }));
+  });
+
+  it('should create router outlet', () => {
+    let de = fixture.debugElement.query(By.directive(RouterOutlet));  
+    expect(de).not.toBeNull();  
+   });
 });

@@ -1,3 +1,33 @@
-<p>
-  shopping-cart works!
-</p>
+
+<div class="row"> 
+  <div class="col-3">
+        <div class="sticky-top">
+              <div class="list-group">
+                <a class="list-group-item" #allCategories [class.active]="checkActiveClass(allCategories)" (click)="loadAllCategories()">All categories</a>
+                <a #productCategory (click)="loadProducts(productCategory)"  id="{{category.name}}"  *ngFor="let category of categories;" class="list-group-item" [class.active]="checkActiveClass(productCategory)">
+                  {{category.value}}
+                </a>
+              </div>
+        </div>     
+   </div>
+   <div class="col">
+      <div class="row"> 
+          <ng-container *ngFor="let product of filteredProducts;let i = index;">
+              <div class="col">
+                  <div class="card" style="width: 18rem;">
+                      <img [src]="product.imageUrl" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.title}}</h5>
+                        <h4 class="center">{{product.price | currency:'USD':true}}</h4>                 
+                       </div> 
+                       <div class="card-footer">
+                          <button (click)="addToCart(product)" class="btn btn-primary btn-block">Add to Cart</button> 
+                       </div>        
+                   </div>
+              </div>
+              <div *ngIf="(i + 1) % 3 === 0" class="w-100"></div>  
+          </ng-container>
+        </div>
+   </div>
+</div>
+
